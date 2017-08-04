@@ -13,22 +13,22 @@ public class BWCollectionView: SKNode {
     
     //MARK: - public
     /** the current index of the CollectionView */
-    var index : Int = 0 { didSet{ delegate?.collectionView(didMoveTo: index) } }
+    public var index : Int = 0 { didSet{ delegate?.collectionView(didMoveTo: index) } }
     
     /** the spacing between elements of the CollectionView */
-    var spacing : CGFloat = 0 { didSet{ setSpacing() } }
+    public var spacing : CGFloat = 0 { didSet{ setSpacing() } }
     
     /** the damping ratio for the collectionView (0 to 1 meaning the percentage of speed to deaccelerate, default is 0.01) */
-    var dampingRatio : Double = 0.01
+    public var dampingRatio : Double = 0.01
     
     /** the object that acts as data source for the collection view */
-    var dataSource : BWCollectionViewDataSource? { didSet{ reloadData() } }
+    public var dataSource : BWCollectionViewDataSource? { didSet{ reloadData() } }
     
     /** the object that acts as delegate for the collection view */
-    var delegate : BWCollectionViewDelegate?
+    public var delegate : BWCollectionViewDelegate?
     
     //MARK: - initializers
-    init(at view: SKView) {
+    public init(at view: SKView) {
         skview = view
         super.init()
         
