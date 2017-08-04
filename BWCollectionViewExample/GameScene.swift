@@ -8,6 +8,10 @@
 
 import SpriteKit
 import GameplayKit
+import BWCollectionView
+import BWCollectionViewItem
+import BWCollectionViewDataSource
+
 
 class GameScene: SKScene, BWCollectionViewDataSource {
     

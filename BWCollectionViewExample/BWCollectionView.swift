@@ -7,9 +7,9 @@
 
 import UIKit
 import SpriteKit
-typealias Index = Int
+public typealias Index = Int
 
-class BWCollectionView: SKNode {
+public class BWCollectionView: SKNode {
     
     //MARK: - public
     /** the current index of the CollectionView */
@@ -37,12 +37,12 @@ class BWCollectionView: SKNode {
         skview?.addGestureRecognizer( panGestureRecognizer )
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     /** extremely important to call this before leaving the scene*/
-    override func removeFromParent() {
+    override public func removeFromParent() {
         super.removeFromParent()
         skview?.removeGestureRecognizer( panGestureRecognizer )
     }
@@ -161,11 +161,11 @@ class BWCollectionView: SKNode {
     }
 }
 
-class BWCollectionViewItem : SKNode {
+public class BWCollectionViewItem : SKNode {
     fileprivate var index : Index!
 }
 
-protocol BWCollectionViewDataSource {
+public protocol BWCollectionViewDataSource {
     /** the number of items displayed on this collectionView*/
     func numberOfItems() -> Int
     
@@ -179,7 +179,7 @@ protocol BWCollectionViewDataSource {
     func collectionView(_ collection: BWCollectionView, itemFor index: Index) -> BWCollectionViewItem
 }
 
-protocol BWCollectionViewDelegate {
+public protocol BWCollectionViewDelegate {
     /**
      called each time the collection view changes it's current index
      
