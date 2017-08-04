@@ -133,14 +133,23 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 #if defined(__has_feature) && __has_feature(modules)
 @import SpriteKit;
+@import CoreGraphics;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
+@class SKView;
 @class NSCoder;
 
 SWIFT_CLASS("_TtC16BWCollectionView16BWCollectionView")
 @interface BWCollectionView : SKNode
+/// the current index of the CollectionView
+@property (nonatomic) NSInteger index;
+/// the spacing between elements of the CollectionView
+@property (nonatomic) CGFloat spacing;
+/// the damping ratio for the collectionView (0 to 1 meaning the percentage of speed to deaccelerate, default is 0.01)
+@property (nonatomic) double dampingRatio;
+- (nonnull instancetype)initAt:(SKView * _Nonnull)view OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 /// extremely important to call this before leaving the scene
 - (void)removeFromParent;
