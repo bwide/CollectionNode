@@ -170,7 +170,7 @@ public class BWCollectionView: SKNode {
     }
 }
 
-public class BWCollectionViewItem : SKNode {
+open class BWCollectionViewItem : SKNode {
     fileprivate var index : Index!
 }
 
@@ -199,13 +199,13 @@ public protocol BWCollectionViewDelegate {
     func collectionView(didSelectItem item: BWCollectionViewItem, at index: Index ) -> Void
 }
 
-extension BWCollectionViewDelegate {
+private extension BWCollectionViewDelegate {
     func collectionView(didMoveTo index: Index) -> Void {  }
     func collectionView(didSelectItem item: BWCollectionViewItem, at index: Index ) -> Void {  }
 }
 
-extension CGPoint {
-    fileprivate func distance(to point: CGPoint) -> CGFloat {
+private extension CGPoint {
+    func distance(to point: CGPoint) -> CGFloat {
         let deltaX = point.x - x
         let deltaY = point.y - y
         return hypot(deltaX, deltaY)
