@@ -20,4 +20,4 @@ deploy:
   skip_cleanup: true
   on:
     repo: bwide/BWCollectionView
-  tags; true
+  tags: true
