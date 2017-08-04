@@ -18,8 +18,8 @@ public class BWCollectionView: SKNode {
     /** the spacing between elements of the CollectionView */
     var spacing : CGFloat = 0 { didSet{ setSpacing() } }
     
-    /** the damping ratio for the collectionView (rate it deaccelerates) */
-    var dampingRatio : Double = 3
+    /** the damping ratio for the collectionView (0 to 1 meaning the percentage of speed to deaccelerate, default is 0.01) */
+    var dampingRatio : Double = 0.01
     
     /** the object that acts as data source for the collection view */
     var dataSource : BWCollectionViewDataSource? { didSet{ reloadData() } }
@@ -54,7 +54,8 @@ public class BWCollectionView: SKNode {
     private var biggestItem : SKNode!
     private var shouldBeginUpdating : Bool = false
     private var date : Date!
-    private var velocity : Double!
+    private var pureVelocity : Double!
+    private var trueVelocity : Double!
     private var damping : Double!
     private var previousVelocity : Double!
     private var totalDistance : Double = 0
@@ -92,18 +93,26 @@ public class BWCollectionView: SKNode {
         case .began:
             date = Date()
         case .changed:
-            velocity = Double(panGestureRecognizer.velocity(in: self.skview).x)
+            updateIndex()
+            
+            pureVelocity = Double(panGestureRecognizer.velocity(in: self.skview).x)
+            damping = index == 0 && pureVelocity > 0 || index == dataSource!.numberOfItems()-1 && pureVelocity < 0 ? pureVelocity*0.5 : 0
+            trueVelocity = pureVelocity - damping
+            
             let time = date.timeIntervalSinceNow
-            let distance = -(velocity * time)
+            let distance = -(trueVelocity * time)
             let action = SKAction.move(by: CGVector(dx: distance , dy: 0) , duration: 0)
+            
             children.forEach{ $0.run(action, withKey: "move") }
+            
             totalDistance += distance
             date = Date()
         case .ended:
             //keep moving
             date = Date()
-            damping = 1
-            previousVelocity = velocity
+            damping = 0
+            previousVelocity = trueVelocity
+            trueVelocity = pureVelocity
             shouldBeginUpdating = true
         default:
             print("nothing interesting happening")
@@ -114,7 +123,7 @@ public class BWCollectionView: SKNode {
         if shouldBeginUpdating {
             //create support variables and actions
             let time = date.timeIntervalSinceNow
-            let distance = -(velocity * time)
+            let distance = -(trueVelocity * time)
             
             let action = SKAction.move(by: CGVector(dx: distance, dy: 0),
                                        duration: 0.0)
@@ -122,17 +131,17 @@ public class BWCollectionView: SKNode {
             children.forEach{ $0.run(action, withKey: "move") }
             
             //update context
-            velocity = velocity > 0 ? velocity - damping : velocity + damping
-            damping = damping + dampingRatio // make available to user
+            damping = damping + trueVelocity * dampingRatio
+            trueVelocity = trueVelocity - damping
             date = Date()
             totalDistance += distance
             
-            if abs( velocity ) > abs( previousVelocity ) {
+            if abs( trueVelocity ) >= abs( previousVelocity ) {
                 shouldBeginUpdating = false
                 updateIndex()
                 snap(to: index)
             }
-            else { previousVelocity = velocity }
+            else { previousVelocity = trueVelocity }
         }
     }
     
