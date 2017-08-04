@@ -1,0 +1,10 @@
+framework module BWCollectionView {
+  umbrella header "BWCollectionView.h"
+
+  export *
+  module * { export * }
+}
+
+module BWCollectionView.Swift {
+    header "BWCollectionView-Swift.h"
+}
