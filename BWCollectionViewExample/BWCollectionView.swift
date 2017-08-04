@@ -119,7 +119,7 @@ public class BWCollectionView: SKNode {
         }
     }
     
-    func update(_ currentTime: TimeInterval){// use this
+    public func update(_ currentTime: TimeInterval){// use this
         if shouldBeginUpdating {
             //create support variables and actions
             let time = date.timeIntervalSinceNow

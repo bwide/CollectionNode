@@ -134,6 +134,7 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #if defined(__has_feature) && __has_feature(modules)
 @import SpriteKit;
 @import CoreGraphics;
+@import Foundation;
 #endif
 
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
@@ -153,6 +154,7 @@ SWIFT_CLASS("_TtC16BWCollectionView16BWCollectionView")
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 /// extremely important to call this before leaving the scene
 - (void)removeFromParent;
+- (void)update:(NSTimeInterval)currentTime;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
