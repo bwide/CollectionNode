@@ -48,16 +48,16 @@ public class BWCollectionView: SKNode {
     }
     
     //MARK: - private
-    private var touchDistance : Double!
     private weak var skview: SKView?
+    private var touchDistance : Double!
     private var panGestureRecognizer : UIPanGestureRecognizer!
     private var biggestItem : SKNode!
     private var shouldBeginUpdating : Bool = false
     private var date : Date!
     private var pureVelocity : Double!
     private var trueVelocity : Double!
-    private var damping : Double!
     private var previousVelocity : Double!
+    private var damping : Double!
     private var totalDistance : Double = 0
     private var origin : CGPoint!
     
@@ -121,7 +121,6 @@ public class BWCollectionView: SKNode {
     
     public func update(_ currentTime: TimeInterval){// use this
         if shouldBeginUpdating {
-            //create support variables and actions
             let time = date.timeIntervalSinceNow
             let distance = -(trueVelocity * time)
             
@@ -163,7 +162,7 @@ public class BWCollectionView: SKNode {
         
         let action = SKAction.moveBy(x: distance,
                                      y: 0,
-                                     duration: 0.3)
+                                     duration: 0.1)
         
         children.forEach{ $0.run(action) }
         totalDistance = 0
