@@ -22,10 +22,13 @@ public class BWCollectionView: SKNode {
     var dampingRatio : Double = 0.01
     
     /** the object that acts as data source for the collection view */
-    var dataSource : BWCollectionViewDataSource? { didSet{ reloadData() } }
+    public weak var dataSource : BWCollectionViewDataSource? { didSet{ reloadData() } }
     
     /** the object that acts as delegate for the collection view */
-    var delegate : BWCollectionViewDelegate?
+    public weak var delegate : BWCollectionViewDelegate?
+    
+    /** the duration it takes to snap into a cell */
+    public var snapDuration : Double = 0.3
     
     //MARK: - initializers
     init(at view: SKView) {
@@ -45,6 +48,31 @@ public class BWCollectionView: SKNode {
     override public func removeFromParent() {
         super.removeFromParent()
         skview?.removeGestureRecognizer( panGestureRecognizer )
+    }
+    
+    public func update(_ currentTime: TimeInterval){// use this
+        if shouldBeginUpdating {
+            let time = date.timeIntervalSinceNow
+            let distance = -(trueVelocity * time)
+            
+            let action = SKAction.move(by: CGVector(dx: distance, dy: 0),
+                                       duration: 0.0)
+            //run actions
+            children.forEach{ $0.run(action, withKey: "move") }
+            
+            //update context
+            damping = damping + trueVelocity * dampingRatio
+            trueVelocity = trueVelocity - damping
+            date = Date()
+            totalDistance += distance
+            
+            if abs( trueVelocity ) >= abs( previousVelocity ) {
+                shouldBeginUpdating = false
+                updateIndex()
+                snap(to: index)
+            }
+            else { previousVelocity = trueVelocity }
+        }
     }
     
     //MARK: - private
@@ -119,31 +147,6 @@ public class BWCollectionView: SKNode {
         }
     }
     
-    func update(_ currentTime: TimeInterval){// use this
-        if shouldBeginUpdating {
-            let time = date.timeIntervalSinceNow
-            let distance = -(trueVelocity * time)
-            
-            let action = SKAction.move(by: CGVector(dx: distance, dy: 0),
-                                       duration: 0.0)
-            //run actions
-            children.forEach{ $0.run(action, withKey: "move") }
-            
-            //update context
-            damping = damping + trueVelocity * dampingRatio
-            trueVelocity = trueVelocity - damping
-            date = Date()
-            totalDistance += distance
-            
-            if abs( trueVelocity ) >= abs( previousVelocity ) {
-                shouldBeginUpdating = false
-                updateIndex()
-                snap(to: index)
-            }
-            else { previousVelocity = trueVelocity }
-        }
-    }
-    
     //MARK: - Support methods
     private func updateIndex() {
         let currentNode =
@@ -154,7 +157,8 @@ public class BWCollectionView: SKNode {
         index = (currentNode as! BWCollectionViewItem).index
     }
     
-    private func snap(to index: Index){
+    private func snap(to index: Index) {
+        
         var distance =
             origin.distance(to: children[index].position)
         
@@ -162,7 +166,8 @@ public class BWCollectionView: SKNode {
         
         let action = SKAction.moveBy(x: distance,
                                      y: 0,
-                                     duration: 0.1)
+                                     duration: snapDuration)
+        
         
         children.forEach{ $0.run(action) }
         totalDistance = 0
@@ -173,7 +178,7 @@ public class BWCollectionViewItem : SKNode {
     fileprivate var index : Index!
 }
 
-public protocol BWCollectionViewDataSource {
+public protocol BWCollectionViewDataSource: class {
     /** the number of items displayed on this collectionView*/
     func numberOfItems() -> Int
     
@@ -187,7 +192,7 @@ public protocol BWCollectionViewDataSource {
     func collectionView(_ collection: BWCollectionView, itemFor index: Index) -> BWCollectionViewItem
 }
 
-public protocol BWCollectionViewDelegate {
+public protocol BWCollectionViewDelegate: class {
     /**
      called each time the collection view changes it's current index
      
@@ -198,7 +203,7 @@ public protocol BWCollectionViewDelegate {
     func collectionView(didSelectItem item: BWCollectionViewItem, at index: Index ) -> Void
 }
 
-extension BWCollectionViewDelegate {
+public extension BWCollectionViewDelegate {
     func collectionView(didMoveTo index: Index) -> Void {  }
     func collectionView(didSelectItem item: BWCollectionViewItem, at index: Index ) -> Void {  }
 }
