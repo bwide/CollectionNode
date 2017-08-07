@@ -21,7 +21,14 @@ Then you need to tell carthage to integrate this framework in your Xcode project
 github "bwide/BWCollectionView" ~> 1.0
 ```
 
-All you need to do now is to run `carthage update` and drag `BWCollectionView.framework` into your Xcode project
+Now:
+
+1. On your project folder, run `carthage update` 
+1. On your application target, drag `BWCollectionView.framework` into your Xcode project `Embedded Binaries`
+1. On your application target's `Build Phases`, click the "+" icon and choose “New Copy Files Phase”.
+1. Click the “Destination” drop-down menu and select “Products Directory”.
+1. Add the dSYM file to this list.
+
 
 ## usage
 
