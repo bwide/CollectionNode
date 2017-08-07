@@ -35,7 +35,7 @@ public class BWCollectionView: SKNode {
         skview = view
         super.init()
         
-        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+//        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
         
         skview?.addGestureRecognizer( panGestureRecognizer )
     }
@@ -78,7 +78,7 @@ public class BWCollectionView: SKNode {
     //MARK: - private
     private weak var skview: SKView?
     private var touchDistance : Double!
-    private var panGestureRecognizer : UIPanGestureRecognizer!
+    private lazy var panGestureRecognizer : UIPanGestureRecognizer! = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     private var biggestItem : SKNode!
     private var shouldBeginUpdating : Bool = false
     private var date : Date!
