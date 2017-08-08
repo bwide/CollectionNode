@@ -150,6 +150,8 @@ SWIFT_CLASS("_TtC16BWCollectionView16BWCollectionView")
 @property (nonatomic) CGFloat spacing;
 /// the damping ratio for the collectionView (0 to 1 meaning the percentage of speed to deaccelerate, default is 0.01)
 @property (nonatomic) double dampingRatio;
+/// the duration it takes to snap into a cell
+@property (nonatomic) double snapDuration;
 - (nonnull instancetype)initAt:(SKView * _Nonnull)view OBJC_DESIGNATED_INITIALIZER;
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)aDecoder OBJC_DESIGNATED_INITIALIZER;
 /// extremely important to call this before leaving the scene
