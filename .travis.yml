@@ -1,0 +1,23 @@
+language: swift
+osx_image: xcode9
+xcode_project: BWCollectionViewExample.xcodeproj
+xcode_scheme: BWCollectionView
+xcode_sdk: iphonesimulator9.3
+env:
+  global:
+  - FRAMEWORK_NAME=BWCollectionView
+before_install:
+- brew update
+- brew outdated carthage || brew upgrade carthage
+before_deploy:
+- carthage build --no-skip-current
+- carthage archive BWCollectionView
+deploy:
+  provider: releases
+  api_key:
+    secure: UgJ6hwkE4C0Zd3fP0RZaT6DEKPfC3YClKwPI5p9TfTBYY2Qu9pyC6eJhOta+muZU3Att5XMzoxb9tQ7+x5qAd219uxc9dUKI9JslxyAV8gJe2Ss9M+Ss6Nwf3zy4TXWdTWHjKD3QO742rd4n4cguqyASayhTFhHyC0Hk1sUPJqcjAZIQ9eOdK1MeT01yTEnJ+fR1JuHuI2nKXhzwo3Pcsm7sRchadL0LPwoxr8vBzz6gxZHXDK7LsWqE+mNEnmAQfZBixGx7g0xicKbgPzI/L1AxPnoQjrijVUi6d8o3C+VuEvz/DrGtbldIH/QYjZngwC8lqdRuyuA93KU+QrqK4rN7DVjGw4oMDRZUFPQWJP1jZAeLLPwSMcLiYoj/JoAhWHDFXYbMS02H22fVL1pv1Z3DCJNXCEm/oAouwx60xrtxzURFW7kkDAO2LsI0SmbVIKwzt8qYxp5ASoXkA7+Tn3XT6NyfFMfeSN6soNsNd5MMHTKGbm2OP4y6VQVGX0IzLr+1R63toIhb1X0l8oC1rf9PRb5KwxAd4tIjdJR7AlzE5kmH6YMLQYjaAkoAtH8sIIlPkM21dZlcJseUXoA0xZWA6TCoX6MtNFEnkinAqig/WIGIlgWH6D0G+4dXccaQw9SojXw/w8wGEi+bV3cUHjoGdSjbwCdDwLndjiBu1Vk=
+  file: BWCollectionView.framework.zip
+  skip_cleanup: true
+  on:
+    repo: bwide/BWCollectionView
+  tags: true
