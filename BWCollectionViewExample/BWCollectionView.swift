@@ -75,6 +75,22 @@ public class BWCollectionView: SKNode {
         }
     }
     
+    public func snap(to index: Index) {
+        
+        var distance =
+            origin.distance(to: children[index].position)
+        
+        if children[index].position.x >= 0 { distance = -distance }
+        
+        let action = SKAction.moveBy(x: distance,
+                                     y: 0,
+                                     duration: snapDuration)
+        
+        
+        children.forEach{ $0.run(action) }
+        totalDistance = 0
+    }
+    
     //MARK: - private
     private weak var skview: SKView?
     private var touchDistance : Double!
@@ -156,22 +172,6 @@ public class BWCollectionView: SKNode {
                 }.first!
         
         index = (currentNode as! BWCollectionViewItem).index
-    }
-    
-    private func snap(to index: Index) {
-        
-        var distance =
-            origin.distance(to: children[index].position)
-        
-        if children[index].position.x >= 0 { distance = -distance }
-        
-        let action = SKAction.moveBy(x: distance,
-                                     y: 0,
-                                     duration: snapDuration)
-        
-        
-        children.forEach{ $0.run(action) }
-        totalDistance = 0
     }
 }
 

@@ -157,6 +157,7 @@ SWIFT_CLASS("_TtC16BWCollectionView16BWCollectionView")
 /// extremely important to call this before leaving the scene
 - (void)removeFromParent;
 - (void)update:(NSTimeInterval)currentTime;
+- (void)snapTo:(NSInteger)index;
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 @end
 
