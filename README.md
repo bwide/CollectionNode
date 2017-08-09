@@ -37,6 +37,6 @@ Usage is pretty similar to the known UICollectionView, after you create your `BW
 For finer control you can also five it a `BWCollectionViewDelegate` object.
 
 ## important
-1. you have to call the collection's `update(_ currentTime:)` method in your SKScene for it to properly work
+1. you have to call the collection's `update(_ currentTime:)` method in your SKScene's Update method for it to properly work
 1. also, before presenting another scene, be sure to call `removeFromParent()`
 
