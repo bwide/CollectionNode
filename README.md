@@ -18,17 +18,17 @@ $ brew install carthage
 Then you need to tell carthage to integrate this framework in your Xcode project, by adding the following to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```ogdl
-github "bwide/BWCollectionView" ~> 1.0
+github "bwide/BWCollectionView"
 ```
 
 Now:
 
 1. On your project folder, run `carthage update` 
 1. On your application target, drag `BWCollectionView.framework` into your Xcode project `Embedded Binaries`
-1. On your application target's `Build Phases`, click the "+" icon and choose “New Copy Files Phase”.
-1. Click the “Destination” drop-down menu and select “Products Directory”.
-1. Add the dSYM file to this list.
 
+### important
+
+If you plan to upload your app you must follow additional instructions on Carthage's [README](https://github.com/Carthage/Carthage/blob/master/README.md) on adding frameworks to your application if you're building for iOS, tvOS, or watchOS.
 
 ## usage
 
