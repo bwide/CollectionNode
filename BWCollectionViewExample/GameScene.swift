@@ -62,4 +62,8 @@ class GameScene: SKScene, BWCollectionViewDataSource, BWCollectionViewDelegate {
             $0.run(group)
         }
     }
+    
+    func collectionView(didSelectItem item: BWCollectionViewItem, at index: Index) {
+        print("selected \(item.name ?? "noNameItem") at index \(index.description)")
+    }
 }

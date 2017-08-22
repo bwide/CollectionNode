@@ -94,8 +94,6 @@ public class BWCollectionView: SKNode {
     //MARK: - private
     private weak var skview: SKView?
     private var touchDistance : Double!
-    private lazy var panGestureRecognizer : UIPanGestureRecognizer! =
-        UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     private var biggestItem : SKNode!
     private var shouldBeginUpdating : Bool = false
     private var date : Date!
@@ -103,8 +101,10 @@ public class BWCollectionView: SKNode {
     private var trueVelocity : Double!
     private var previousVelocity : Double!
     private var damping : Double!
-    private var totalDistance : Double = 0
+    fileprivate var totalDistance : Double = 0
     private var origin : CGPoint!
+    private lazy var panGestureRecognizer : UIPanGestureRecognizer! =
+        UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     
     private func reloadData() {
         removeAllChildren()
@@ -164,6 +164,7 @@ public class BWCollectionView: SKNode {
         }
     }
     
+    
     //MARK: - Support methods
     private func updateIndex() {
         let currentNode =
@@ -175,8 +176,23 @@ public class BWCollectionView: SKNode {
     }
 }
 
-open class BWCollectionViewItem : SKNode {
+open class BWCollectionViewItem: SKNode {
     fileprivate var index : Index!
+    
+    public override init() {
+        super.init()
+        isUserInteractionEnabled = true
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let collection = parent as? BWCollectionView {
+            if collection.totalDistance <= 5 { collection.delegate?.collectionView(didSelectItem: self, at: self.index) }
+        }
+    }
 }
 
 public protocol BWCollectionViewDataSource: class {
