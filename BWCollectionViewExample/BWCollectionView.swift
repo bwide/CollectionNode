@@ -34,10 +34,11 @@ public class BWCollectionView: SKNode {
     public init(at view: SKView) {
         skview = view
         super.init()
-        
-//        panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        
         skview?.addGestureRecognizer( panGestureRecognizer )
+    }
+    
+    deinit {
+        skview?.removeGestureRecognizer( panGestureRecognizer )
     }
     
     required public init?(coder aDecoder: NSCoder) {
