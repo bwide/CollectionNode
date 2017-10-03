@@ -55,6 +55,8 @@ public class CollectionNode: SKNode {
     //MARK: - Public methods
     public func update(_ currentTime: TimeInterval){// use this
         if shouldBeginUpdating {
+            updateIndex()
+            
             let time = date.timeIntervalSinceNow
             let distance = -(trueVelocity * time)
             

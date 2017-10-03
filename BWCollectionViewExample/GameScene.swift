@@ -46,9 +46,11 @@ class GameScene: SKScene, CollectionNodeDataSource {
 
 extension GameScene: CollectionNodeDelegate {
     func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) {
-        //animate
-        collectionNode.item(at: index).setScale(1.2)
-        collectionNode.children.filter{ emojiCollection.children.index(of: $0) != index }.forEach{ $0.setScale(1) }
+        let enlarge = SKAction.scale(to: 1.3, duration: 0.15)
+        let shrink = SKAction.scale(to: 1, duration: 0.15)
+        
+        collectionNode.item(at: index).run(enlarge)
+        collectionNode.children.filter{ emojiCollection.children.index(of: $0) != index }.forEach{ $0.run(shrink) }
     }
     
     func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index) {
