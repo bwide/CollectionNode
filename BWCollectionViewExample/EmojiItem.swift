@@ -8,9 +8,8 @@
 
 import Foundation
 import SpriteKit
-//import BWCollectionView
 
-class EmojiItem : BWCollectionViewItem {
+class EmojiItem : CollectionNodeItem {
     private var nameLabel : SKLabelNode = SKLabelNode()
     private var imageNode : SKSpriteNode!
     

@@ -9,15 +9,17 @@
 import SpriteKit
 import GameplayKit
 
-
-class GameScene: SKScene, BWCollectionViewDataSource, BWCollectionViewDelegate {
+class GameScene: SKScene, CollectionNodeDataSource {
     
-    var emojiCollection : BWCollectionView!
+    var emojiCollection : CollectionNode!
     
     override func didMove(to view: SKView) {
-        emojiCollection = BWCollectionView(at: view)
+        emojiCollection = CollectionNode(at: view)
+        
         emojiCollection.dataSource = self
         emojiCollection.delegate = self
+        
+        emojiCollection.spaceBetweenItems = 15
         
         emojiCollection.position = CGPoint(x: size.width*0.5,
                                            y: size.height*0.5)
@@ -29,7 +31,7 @@ class GameScene: SKScene, BWCollectionViewDataSource, BWCollectionViewDelegate {
         return EmojiModel.default.emojis.count
     }
     
-    func collectionView(_ collection: BWCollectionView, itemFor index: Index) -> BWCollectionViewItem {
+    func collectionNode(_ collection: CollectionNode, itemFor index: Index) -> CollectionNodeItem {
         //create and configure an item
         let item = EmojiItem()
         item.emoji = EmojiModel.default.emojis[index]
@@ -40,30 +42,18 @@ class GameScene: SKScene, BWCollectionViewDataSource, BWCollectionViewDelegate {
         //be sure to call this so the collection works properly
         emojiCollection.update(currentTime)
     }
-    
-    func collectionView(didMoveTo index: Index) {
-        //custom animation
-        let moveUp =
-            SKAction.moveTo(y: 50, duration: 0.1)
-        let moveDown =
-            SKAction.moveTo(y: 0, duration: 0.1)
-        let shrink =
-            SKAction.resize(byWidth: 2,
-                            height: 2,
-                            duration: 0)
+}
+
+extension GameScene: CollectionNodeDelegate {
+    func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) {
+        let enlarge = SKAction.scale(to: 1.3, duration: 0.15)
+        let shrink = SKAction.scale(to: 1, duration: 0.15)
         
-        let group = SKAction.group([ moveDown, shrink ])
-        
-        emojiCollection.children[index].run(moveUp)
-        
-        emojiCollection.children.filter {
-            emojiCollection.children.index(of: $0) != index
-        }.forEach{
-            $0.run(group)
-        }
+        collectionNode.item(at: index).run(enlarge)
+        collectionNode.children.filter{ emojiCollection.children.index(of: $0) != index }.forEach{ $0.run(shrink) }
     }
     
-    func collectionView(didSelectItem item: BWCollectionViewItem, at index: Index) {
+    func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index) {
         print("selected \(item.name ?? "noNameItem") at index \(index.description)")
     }
 }
