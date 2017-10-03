@@ -1,5 +1,5 @@
 //
-//  BWCollectionView.swift
+//  CollectionNode.swift
 //
 //  Created by Bruno Fulber Wide on 18/07/17.
 //  Copyright © 2017 BW. All rights reserved.
@@ -9,26 +9,28 @@ import UIKit
 import SpriteKit
 public typealias Index = Int
 
-public class BWCollectionView: SKNode {
+public class CollectionNode: SKNode {
     
     //MARK: - public
     /** the current index of the CollectionView */
-    public var index : Int = 0 { didSet{ delegate?.collectionView(didMoveTo: index) } }
-    
-    /** the spacing between elements of the CollectionView */
-    public var spacing : CGFloat = 0 { didSet{ setSpacing() } }
-    
-    /** the damping ratio for the collectionView (0 to 1 meaning the percentage of speed to deaccelerate, default is 0.01) */
-    public var dampingRatio : Double = 0.01
+    public var index: Int = 0 { didSet{ delegate?.collectionNode(self, didShowItemAt: index) } }
     
     /** the object that acts as data source for the collection view */
-    public weak var dataSource : BWCollectionViewDataSource? { didSet{ reloadData() } }
+    public weak var dataSource: CollectionNodeDataSource? { didSet{ reloadData() } }
     
     /** the object that acts as delegate for the collection view */
-    public weak var delegate : BWCollectionViewDelegate?
+    public weak var delegate: CollectionNodeDelegate?
     
+    
+    //MARK: - Default values
     /** the duration it takes to snap into a cell */
-    public var snapDuration : Double = 0.3
+    public var snapDuration: Double = 0.3
+    
+    /** the damping ratio for the collectionNode (0 to 1 meaning the percentage of speed to deaccelerate, default is 0.01) */
+    public var dampingRatio: Double = 0.01
+    
+    /** the spacing between elements of the CollectionView */
+    public var spaceBetweenItems: CGFloat = 5 { didSet{ setSpacing() } }
     
     //MARK: - initializers
     public init(at view: SKView) {
@@ -45,12 +47,12 @@ public class BWCollectionView: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    /** extremely important to call this before leaving the scene*/
     override public func removeFromParent() {
         super.removeFromParent()
         skview?.removeGestureRecognizer( panGestureRecognizer )
     }
     
+    //MARK: - Public methods
     public func update(_ currentTime: TimeInterval){// use this
         if shouldBeginUpdating {
             let time = date.timeIntervalSinceNow
@@ -74,6 +76,11 @@ public class BWCollectionView: SKNode {
             }
             else { previousVelocity = trueVelocity }
         }
+    }
+    
+    public func item(at index: Index) -> CollectionNodeItem {
+        //TODO error index out of bounds
+        return children[index] as! CollectionNodeItem
     }
     
     public func snap(to index: Index) {
@@ -111,7 +118,7 @@ public class BWCollectionView: SKNode {
         removeAllChildren()
         
         for index in 0..<dataSource!.numberOfItems() {
-            let item = dataSource!.collectionView(self, itemFor: index)
+            let item = dataSource!.collectionNode(self, itemFor: index)
             item.index = index
             addChild(item)
         }
@@ -120,17 +127,14 @@ public class BWCollectionView: SKNode {
         
         origin = children[0].position
         
-        for index in 0..<children.count{
-            children[index].position.x =
-                (biggestItem.calculateAccumulatedFrame().size.width + spacing) * CGFloat(index)
-        }
+        setSpacing()
         index = 0
     }
     
-    private func setSpacing(){
+    fileprivate func setSpacing(){
         for index in 0..<children.count{
             children[index].position.x =
-                (biggestItem.calculateAccumulatedFrame().size.width + spacing) * CGFloat(index)
+                (biggestItem.calculateAccumulatedFrame().size.width + spaceBetweenItems) * CGFloat(index)
         }
     }
     
@@ -169,16 +173,22 @@ public class BWCollectionView: SKNode {
     //MARK: - Support methods
     private func updateIndex() {
         let currentNode =
-            children.filter{ $0.isKind(of: BWCollectionViewItem.self) }.sorted{
+            children.filter{ $0.isKind(of: CollectionNodeItem.self) }.sorted{
                 return $0.position.distance(to: origin) < $1.position.distance(to: origin)
                 }.first!
         
-        index = (currentNode as! BWCollectionViewItem).index
+        index = (currentNode as! CollectionNodeItem).index
     }
 }
 
-open class BWCollectionViewItem: SKNode {
+
+//MARK: - collection node item
+open class CollectionNodeItem: SKNode {
+    
     fileprivate var index : Index!
+    
+    fileprivate var collection: CollectionNode { return self.parent as! CollectionNode }
+    
     
     public override init() {
         super.init()
@@ -190,40 +200,37 @@ open class BWCollectionViewItem: SKNode {
     }
     
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let collection = parent as? BWCollectionView {
-            if collection.totalDistance <= 5 { collection.delegate?.collectionView(didSelectItem: self, at: self.index) }
-        }
+        if collection.totalDistance <= 5 { collection.delegate?.collectionNode(collection, didSelectItem: self, at: self.index) }
     }
 }
 
-public protocol BWCollectionViewDataSource: class {
-    /** the number of items displayed on this collectionView*/
+public protocol CollectionNodeDataSource: class {
+    /** the number of items displayed on this collectionNode*/
     func numberOfItems() -> Int
     
     /**
      here you should return the item for each index in the collectionVIew
-     - parameter collection: the collectionView in which the items are displayed
+     - parameter collection: the collectionNode in which the items are displayed
      - parameter index: the integer value of the index where the returned object will be at
      
      - returns: an SKNode to be displayed in each index
      */
-    func collectionView(_ collection: BWCollectionView, itemFor index: Index) -> BWCollectionViewItem
+    func collectionNode(_ collection: CollectionNode, itemFor index: Index) -> CollectionNodeItem
 }
 
-public protocol BWCollectionViewDelegate: class {
+public protocol CollectionNodeDelegate: class {
     /**
      called each time the collection view changes it's current index
      
-     - parameter index: current index of the collectionView
+     - parameter index: current index of the collectionNode
      */
-    func collectionView(didMoveTo index: Index) -> Void
-    
-    func collectionView(didSelectItem item: BWCollectionViewItem, at index: Index ) -> Void
+    func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) -> Void
+    func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index ) -> Void
 }
 
-public extension BWCollectionViewDelegate {
-    func collectionView(didMoveTo index: Index) -> Void {  }
-    func collectionView(didSelectItem item: BWCollectionViewItem, at index: Index ) -> Void {  }
+public extension CollectionNodeDelegate {
+    func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) -> Void {  }
+    func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index ) -> Void {  }
 }
 
 private extension CGPoint {
