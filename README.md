@@ -2,7 +2,7 @@
 
  A collectionView made for Sprite Kit
  
- ![Preview](https://github.com/bwide/BWCollectionView/blob/refactoring/iphoneWideTela.gif)
+ ![Preview](https://github.com/bwide/BWCollectionView/blob/refactoring/iphonePreview.gif)
 
 ## installation
 
