@@ -20,7 +20,7 @@ $ brew install carthage
 Then you need to tell carthage to integrate this framework in your Xcode project, by adding the following to your [Cartfile](https://github.com/Carthage/Carthage/blob/master/Documentation/Artifacts.md#cartfile):
 
 ```ruby
-github "bwide/BWCollectionView"
+github "bwide/CollectionNode"
 ```
 
 Now:
