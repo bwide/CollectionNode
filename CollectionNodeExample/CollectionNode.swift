@@ -12,8 +12,8 @@ public typealias Index = Int
 public class CollectionNode: SKNode {
     
     //MARK: - public
-    /** the current index of the CollectionView */
-    public var index: Int = 0 { didSet{ delegate?.collectionNode(self, didShowItemAt: index) } }
+    /** the current index of the CollectionNode */
+    private(set) public var index: Int = 0 { didSet{ delegate?.collectionNode(self, didShowItemAt: index) } }
     
     /** the object that acts as data source for the collection view */
     public weak var dataSource: CollectionNodeDataSource? { didSet{ reloadData() } }
@@ -21,16 +21,21 @@ public class CollectionNode: SKNode {
     /** the object that acts as delegate for the collection view */
     public weak var delegate: CollectionNodeDelegate?
     
+    /** returns all the children of this node that are CollectionNodeItems  */
+    public var items: [CollectionNodeItem] {
+        var nodes: [CollectionNodeItem] = []
+        children.forEach{
+            if let item = $0 as? CollectionNodeItem {
+                nodes.append(item)
+            }
+        }
+        return nodes
+    }
     
     //MARK: - Default values
-    /** the duration it takes to snap into a cell */
-    public var snapDuration: Double = 0.3
-    
-    /** the damping ratio for the collectionNode (0 to 1 meaning the percentage of speed to deaccelerate, default is 0.01) */
-    public var dampingRatio: Double = 0.01
-    
-    /** the spacing between elements of the CollectionView */
+    /** the spacing between elements of the CollectionNode */
     public var spaceBetweenItems: CGFloat = 5 { didSet{ setSpacing() } }
+    
     
     //MARK: - initializers
     public init(at view: SKView) {
@@ -53,7 +58,12 @@ public class CollectionNode: SKNode {
     }
     
     //MARK: - Public methods
-    public func update(_ currentTime: TimeInterval){// use this
+    /**
+     To be called on the scene's update. Allows this node to animate when touch is released
+     
+     - parameter dampingRatio: the ratio for the collectionNode deacceleration (0 to 1 meaning the percentage of speed to deaccelerate when touch is released, default is 1%)
+     */
+    public func update(_ currentTime: TimeInterval, dampingRatio: Double = 0.01){
         if shouldBeginUpdating {
             updateIndex()
             
@@ -80,12 +90,12 @@ public class CollectionNode: SKNode {
         }
     }
     
-    public func item(at index: Index) -> CollectionNodeItem {
-        //TODO error index out of bounds
-        return children[index] as! CollectionNodeItem
-    }
-    
-    public func snap(to index: Index) {
+    /**
+     snaps to an item at a given index
+     
+     - parameter duration: The duration of the snap animation in seconds (default is 0.3)
+     */
+    public func snap(to index: Index, withDuration duration: Double = 0.3) {
         
         var distance =
             origin.distance(to: children[index].position)
@@ -94,11 +104,28 @@ public class CollectionNode: SKNode {
         
         let action = SKAction.moveBy(x: distance,
                                      y: 0,
-                                     duration: snapDuration)
+                                     duration: duration)
         
         
         children.forEach{ $0.run(action) }
         totalDistance = 0
+    }
+    
+    /** reloads all the items in the collection */
+    public func reloadData() {
+        removeAllChildren()
+        
+        for index in 0..<dataSource!.numberOfItems() {
+            let item = dataSource!.collectionNode(self, itemFor: index)
+            item.index = index
+            addChild(item)
+        }
+        
+        biggestItem = children.sorted{ $0.calculateAccumulatedFrame().size.width > $1.calculateAccumulatedFrame().size.width }.first!
+        origin = children[0].position
+        index = 0
+        
+        setSpacing()
     }
     
     //MARK: - private
@@ -113,25 +140,7 @@ public class CollectionNode: SKNode {
     private var damping : Double!
     fileprivate var totalDistance : Double = 0
     private var origin : CGPoint!
-    private lazy var panGestureRecognizer : UIPanGestureRecognizer! =
-        UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-    
-    private func reloadData() {
-        removeAllChildren()
-        
-        for index in 0..<dataSource!.numberOfItems() {
-            let item = dataSource!.collectionNode(self, itemFor: index)
-            item.index = index
-            addChild(item)
-        }
-        
-        biggestItem = children.sorted{ $0.calculateAccumulatedFrame().size.width > $1.calculateAccumulatedFrame().size.width }.first!
-        
-        origin = children[0].position
-        
-        setSpacing()
-        index = 0
-    }
+    private lazy var panGestureRecognizer : UIPanGestureRecognizer! = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     
     fileprivate func setSpacing(){
         for index in 0..<children.count{
@@ -207,7 +216,7 @@ open class CollectionNodeItem: SKNode {
 }
 
 public protocol CollectionNodeDataSource: class {
-    /** the number of items displayed on this collectionNode*/
+    /** - returns: the number of items to be displayed on this collectionNode */
     func numberOfItems() -> Int
     
     /**
@@ -227,6 +236,9 @@ public protocol CollectionNodeDelegate: class {
      - parameter index: current index of the collectionNode
      */
     func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) -> Void
+    /**
+     called each time an item is selected
+     */
     func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index ) -> Void
 }
 

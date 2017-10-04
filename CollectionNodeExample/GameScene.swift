@@ -9,7 +9,7 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene, CollectionNodeDataSource {
+class GameScene: SKScene {
     
     var emojiCollection : CollectionNode!
     
@@ -27,33 +27,35 @@ class GameScene: SKScene, CollectionNodeDataSource {
         addChild(emojiCollection)
     }
     
-    func numberOfItems() -> Int {
-        return EmojiModel.default.emojis.count
-    }
-    
-    func collectionNode(_ collection: CollectionNode, itemFor index: Index) -> CollectionNodeItem {
-        //create and configure an item
-        let item = EmojiItem()
-        item.emoji = EmojiModel.default.emojis[index]
-        return item
-    }
-    
     override func update(_ currentTime: TimeInterval) {
         //be sure to call this so the collection works properly
         emojiCollection.update(currentTime)
     }
 }
 
+extension GameScene: CollectionNodeDataSource {
+    func numberOfItems() -> Int {
+        return EmojiModel.default.emojis.count
+    }
+    
+    func collectionNode(_ collection: CollectionNode, itemFor index: Index) -> CollectionNodeItem {
+        //create and configure items
+        let item = EmojiItem()
+        item.emoji = EmojiModel.default.emojis[index]
+        return item
+    }
+}
+
 extension GameScene: CollectionNodeDelegate {
     func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) {
-        let enlarge = SKAction.scale(to: 1.3, duration: 0.15)
-        let shrink = SKAction.scale(to: 1, duration: 0.15)
+        let growAction = SKAction.scale(to: 1.3, duration: 0.15)
+        let shrinkAction = SKAction.scale(to: 1, duration: 0.15)
         
-        collectionNode.item(at: index).run(enlarge)
-        collectionNode.children.filter{ emojiCollection.children.index(of: $0) != index }.forEach{ $0.run(shrink) }
+        collectionNode.items[index].run(growAction)
+        collectionNode.items.filter{ emojiCollection.items.index(of: $0) != index }.forEach{ $0.run(shrinkAction) }
     }
     
     func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index) {
-        print("selected \(item.name ?? "noNameItem") at index \(index.description)")
+        print("selected \(item.name ?? "noNameItem") at index \(index)")
     }
 }
