@@ -1,6 +1,8 @@
-# BWCollectionView [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+# CollectionNode [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
  A collectionView made for Sprite Kit
+ 
+ ![Preview](https://github.com/bwide/BWCollectionView/blob/refactoring/iphoneWideTela.gif)
 
 ## installation
 
