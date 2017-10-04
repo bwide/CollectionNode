@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "225743E31F33C59A0098549B"
-               BuildableName = "BWCollectionView.framework"
-               BlueprintName = "BWCollectionView"
-               ReferencedContainer = "container:BWCollectionViewExample.xcodeproj">
+               BuildableName = "CollectionNode.framework"
+               BlueprintName = "CollectionNode"
+               ReferencedContainer = "container:CollectionNodeExample.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -48,9 +48,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "225743E31F33C59A0098549B"
-            BuildableName = "BWCollectionView.framework"
-            BlueprintName = "BWCollectionView"
-            ReferencedContainer = "container:BWCollectionViewExample.xcodeproj">
+            BuildableName = "CollectionNode.framework"
+            BlueprintName = "CollectionNode"
+            ReferencedContainer = "container:CollectionNodeExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "225743E31F33C59A0098549B"
-            BuildableName = "BWCollectionView.framework"
-            BlueprintName = "BWCollectionView"
-            ReferencedContainer = "container:BWCollectionViewExample.xcodeproj">
+            BuildableName = "CollectionNode.framework"
+            BlueprintName = "CollectionNode"
+            ReferencedContainer = "container:CollectionNodeExample.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
