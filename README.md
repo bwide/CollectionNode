@@ -166,3 +166,9 @@ here you should return an item for each index in the collectionVIew
 
 ## important
 1. you have to call the collection's `update(_ currentTime:)` method in your SKScene's Update method for it to properly work
+
+## Apps using CollectionNode
+
+* [Tiles](https://itunes.apple.com/br/app/tiles-puzzle-game/id1253612564?mt=8)
+
+![Preview](https://github.com/bwide/CollectionNode/blob/master/tiles.gif)
