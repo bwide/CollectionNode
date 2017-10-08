@@ -106,7 +106,7 @@
 		224E5CDC1F301EB0005CA1AE = {
 			isa = PBXGroup;
 			children = (
-				228AEFB71F8A9222006C9967 /* Source */,
+				22E94BE61F8A934A0040DFC6 /* Source */,
 				224E5CE71F301EB0005CA1AE /* CollectionNodeExample */,
 				225743E51F33C59A0098549B /* CollectionNode */,
 				2275AFA61F852FCE00F85503 /* CollectionNodeUnitTests */,
@@ -167,12 +167,12 @@
 			path = CollectionNodeUnitTests;
 			sourceTree = "<group>";
 		};
-		228AEFB71F8A9222006C9967 /* Source */ = {
+		22E94BE61F8A934A0040DFC6 /* Source */ = {
 			isa = PBXGroup;
 			children = (
 				22B90E4E1F34031C00C75CE2 /* CollectionNode.swift */,
 			);
-			name = Source;
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
