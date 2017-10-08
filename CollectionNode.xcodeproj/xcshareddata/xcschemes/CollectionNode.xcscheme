@@ -17,7 +17,7 @@
                BlueprintIdentifier = "225743E31F33C59A0098549B"
                BuildableName = "CollectionNode.framework"
                BlueprintName = "CollectionNode"
-               ReferencedContainer = "container:CollectionNodeExample.xcodeproj">
+               ReferencedContainer = "container:CollectionNode.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -50,7 +50,7 @@
             BlueprintIdentifier = "225743E31F33C59A0098549B"
             BuildableName = "CollectionNode.framework"
             BlueprintName = "CollectionNode"
-            ReferencedContainer = "container:CollectionNodeExample.xcodeproj">
+            ReferencedContainer = "container:CollectionNode.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -68,7 +68,7 @@
             BlueprintIdentifier = "225743E31F33C59A0098549B"
             BuildableName = "CollectionNode.framework"
             BlueprintName = "CollectionNode"
-            ReferencedContainer = "container:CollectionNodeExample.xcodeproj">
+            ReferencedContainer = "container:CollectionNode.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

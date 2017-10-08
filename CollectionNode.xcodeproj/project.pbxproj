@@ -19,6 +19,7 @@
 		225743EC1F33C59A0098549B /* CollectionNode.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 225743E41F33C59A0098549B /* CollectionNode.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2275AFA81F852FCE00F85503 /* CollectionNodeUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2275AFA71F852FCE00F85503 /* CollectionNodeUnitTests.swift */; };
 		227D88181F364B0A000FD7B1 /* EmojiModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227D88171F364B0A000FD7B1 /* EmojiModel.swift */; };
+		228AEFB81F8A924A006C9967 /* CollectionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B90E4E1F34031C00C75CE2 /* CollectionNode.swift */; };
 		22B90E4F1F34031C00C75CE2 /* CollectionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B90E4E1F34031C00C75CE2 /* CollectionNode.swift */; };
 		22B90E501F34031C00C75CE2 /* CollectionNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B90E4E1F34031C00C75CE2 /* CollectionNode.swift */; };
 		22D55DDF1F30224200B62B0F /* EmojiItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D55DDE1F30224200B62B0F /* EmojiItem.swift */; };
@@ -105,6 +106,7 @@
 		224E5CDC1F301EB0005CA1AE = {
 			isa = PBXGroup;
 			children = (
+				228AEFB71F8A9222006C9967 /* Source */,
 				224E5CE71F301EB0005CA1AE /* CollectionNodeExample */,
 				225743E51F33C59A0098549B /* CollectionNode */,
 				2275AFA61F852FCE00F85503 /* CollectionNodeUnitTests */,
@@ -129,7 +131,6 @@
 				224E5CEE1F301EB0005CA1AE /* GameScene.swift */,
 				227D88171F364B0A000FD7B1 /* EmojiModel.swift */,
 				224E5D021F3020BB005CA1AE /* Emoji.swift */,
-				22B90E4E1F34031C00C75CE2 /* CollectionNode.swift */,
 				22D55DDE1F30224200B62B0F /* EmojiItem.swift */,
 				224E5CFA1F301EB0005CA1AE /* Info.plist */,
 			);
@@ -164,6 +165,14 @@
 				2275AFA91F852FCE00F85503 /* Info.plist */,
 			);
 			path = CollectionNodeUnitTests;
+			sourceTree = "<group>";
+		};
+		228AEFB71F8A9222006C9967 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				22B90E4E1F34031C00C75CE2 /* CollectionNode.swift */,
+			);
+			name = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -260,7 +269,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 224E5CE01F301EB0005CA1AE /* Build configuration list for PBXProject "CollectionNodeExample" */;
+			buildConfigurationList = 224E5CE01F301EB0005CA1AE /* Build configuration list for PBXProject "CollectionNode" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -335,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2275AFA81F852FCE00F85503 /* CollectionNodeUnitTests.swift in Sources */,
+				228AEFB81F8A924A006C9967 /* CollectionNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -605,7 +615,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		224E5CE01F301EB0005CA1AE /* Build configuration list for PBXProject "CollectionNodeExample" */ = {
+		224E5CE01F301EB0005CA1AE /* Build configuration list for PBXProject "CollectionNode" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				224E5CFB1F301EB0005CA1AE /* Debug */,
