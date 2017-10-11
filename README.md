@@ -1,4 +1,4 @@
-# CollectionNode [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+# CollectionNode [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![Badge w/ Version](https://cocoapod-badges.herokuapp.com/v/NSStringMask/badge.png)](https://cocoapods.org/pods/CollectionNode) ![MIT](https://cocoapod-badges.herokuapp.com/l/NSStringMask/badge.png)
 
  A collectionView made for Sprite Kit
  
