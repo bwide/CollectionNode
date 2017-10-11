@@ -1,4 +1,9 @@
-# CollectionNode [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) [![Badge w/ Version](https://cocoapod-badges.herokuapp.com/v/NSStringMask/badge.png)](https://cocoapods.org/pods/CollectionNode) ![MIT](https://cocoapod-badges.herokuapp.com/l/NSStringMask/badge.png)
+# CollectionNode 
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage) 
+[![Badge w/ Version](https://cocoapod-badges.herokuapp.com/v/NSStringMask/badge.png)](https://cocoapods.org/pods/CollectionNode) 
+![MIT](https://cocoapod-badges.herokuapp.com/l/NSStringMask/badge.png) 
+![Swift 4.0.x](https://img.shields.io/badge/Swift-4.0.x-orange.svg)
+[![Build Status](https://travis-ci.org/bwide/CollectionNode.svg?branch=master)](https://travis-ci.org/bwide/CollectionNode)
 
  A collectionView made for Sprite Kit
  
@@ -27,6 +32,15 @@ Now:
 
 1. On your project folder, run `carthage update` 
 1. On your application target, drag `BWCollectionView.framework` into your Xcode project `Embedded Binaries`
+
+### CocoaPods
+
+Add this to your [Podfile](https://guides.cocoapods.org/syntax/podfile.html)
+
+```ruby
+pod 'CollectionNode'
+```
+
 
 ### important
 
