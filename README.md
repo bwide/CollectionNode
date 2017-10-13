@@ -54,7 +54,7 @@ If you plan to upload your app you must follow additional instructions on Cartha
 import CollectionNode
 ```
 
-1. Add a ```CollectionNode``` to ```CollectionNodeScene``` and set it's dataSource and Delegate:
+2. Add a ```CollectionNode``` to ```CollectionNodeScene``` and set it's dataSource and Delegate:
 
 ```swift
 private var myCollectionNode: CollectionNode!
@@ -69,7 +69,7 @@ override func didMove(to view: SKView) {
 }
 ```
 
-1. Conform this ```CollectionNodeScene``` to ```CollectionNodeDataSource``` and implement all it's methods:
+3. Conform this ```CollectionNodeScene``` to ```CollectionNodeDataSource``` and implement all it's methods:
 ```swift
 extension GameScene: CollectionNodeDataSource {
     func numberOfItems() -> Int {
@@ -84,7 +84,7 @@ extension GameScene: CollectionNodeDataSource {
     }
 }
 ```
-1. Conform to ```CollectionNodeDelegate```and override the methods that you need:
+4. Conform to ```CollectionNodeDelegate```and override the methods that you need:
 ```swift
 extension GameScene: CollectionNodeDelegate {
 
@@ -101,9 +101,16 @@ extension GameScene: CollectionNodeDelegate {
     }
 }
 ```
-1. Now ```CollectionNode```will work with it's default implementation. Override it if you want custom behavior
 
-Usage is pretty similar to the known UICollectionView, after you create your `BWCollectionView` object you'll need to give it some data to display with a data source object, which is any object that conforms to the `BWCollectionViewDataSource` protocol.
+5. Update your ```CollectionNode``` with the scene:
+
+```swift
+override func update(_ currentTime: TimeInterval) {
+    collectionNode.update(currentTime)
+}
+```
+
+6. Now ```CollectionNode```will work with it's default implementation.
 
 ### Properties
 
@@ -177,9 +184,6 @@ here you should tell the number of items this collection will display
 func collectionNode(_ collection: CollectionNode, itemFor index: Index) -> CollectionNodeItem
 ```
 here you should return an item for each index in the collectionVIew
-
-## important
-1. you have to call the collection's `update(_ currentTime:)` method in your SKScene's Update method for it to properly work
 
 ## Apps using CollectionNode
 
