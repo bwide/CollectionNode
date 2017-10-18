@@ -190,3 +190,5 @@ here you should return an item for each index in the collectionVIew
 * [Tiles](https://itunes.apple.com/br/app/tiles-puzzle-game/id1253612564?mt=8)
 
 ![Preview](https://github.com/bwide/CollectionNode/blob/master/tiles.gif)
+
+Show me your apps! if you have used this collection i'd love to see it, reach me in ```bfwide07@gmail.com``` you can send me images and i will post them here.
