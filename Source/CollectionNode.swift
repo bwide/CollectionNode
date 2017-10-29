@@ -135,7 +135,7 @@ public class CollectionNode: SKNode {
     private var shouldBeginUpdating : Bool = false
     private var date : Date!
     private var pureVelocity : Double!
-    private var trueVelocity : Double!
+    private var trueVelocity : Double = 0
     private var previousVelocity : Double!
     private var damping : Double!
     fileprivate var totalDistance : Double = 0
