@@ -42,10 +42,18 @@ public class CollectionNode: SKNode {
         skview = view
         super.init()
         skview?.addGestureRecognizer( panGestureRecognizer )
+        
+        #if os(tvOS)
+        self.skview?.addGestureRecognizer( self.tapGestureRecognizer )
+        #endif
     }
     
     deinit {
         skview?.removeGestureRecognizer( panGestureRecognizer )
+        
+        #if os(tvOS)
+        skview?.removeGestureRecognizer( tapGestureRecognizer )
+        #endif
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -55,6 +63,9 @@ public class CollectionNode: SKNode {
     override public func removeFromParent() {
         super.removeFromParent()
         skview?.removeGestureRecognizer( panGestureRecognizer )
+        #if os(tvOS)
+        skview?.removeGestureRecognizer( tapGestureRecognizer )
+        #endif
     }
     
     //MARK: - Public methods
@@ -142,12 +153,31 @@ public class CollectionNode: SKNode {
     private var origin : CGPoint!
     private lazy var panGestureRecognizer : UIPanGestureRecognizer! = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     
+    #if os(tvOS)
+    private lazy var tapGestureRecognizer: UIGestureRecognizer! = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+    
+    @objc private func handleTap() {
+        guard let delegate = self.delegate else {
+            return
+        }
+        
+        if self.totalDistance <= 5 { delegate.collectionNode(self, didSelectItem: items[index], at: index) }
+    }
+    
+    public override var canBecomeFocused: Bool {
+        return true
+    }
+    
+    #endif
+    
     fileprivate func setSpacing(){
         for index in 0..<children.count{
             children[index].position.x =
                 (biggestItem.calculateAccumulatedFrame().size.width + spaceBetweenItems) * CGFloat(index)
         }
     }
+    
+    
     
     @objc private func handlePan() {
         switch panGestureRecognizer.state {
@@ -180,7 +210,6 @@ public class CollectionNode: SKNode {
         }
     }
     
-    
     //MARK: - Support methods
     private func updateIndex() {
         let currentNode =
@@ -210,9 +239,13 @@ open class CollectionNodeItem: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    #if !os(tvOS)
+    // if on tvOS, didSelectItem is called on tapGesture instead
+    
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         if collection.totalDistance <= 5 { collection.delegate?.collectionNode(collection, didSelectItem: self, at: self.index) }
     }
+    #endif
 }
 
 public protocol CollectionNodeDataSource: class {
