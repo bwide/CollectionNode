@@ -92,7 +92,7 @@ public class CollectionNode: SKNode {
             children.forEach { $0.run(action, withKey: "move") }
             
             //update context
-            damping += trueVelocity * dampingRatio
+            damping = damping + trueVelocity * dampingRatio
             trueVelocity -= damping
             date = Date()
             totalDistance += distance
