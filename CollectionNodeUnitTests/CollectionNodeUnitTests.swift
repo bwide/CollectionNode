@@ -7,12 +7,16 @@
 //
 
 import XCTest
+import SpriteKit
 
 class CollectionNodeUnitTests: XCTestCase {
     
+    var scene: MockGameScene!
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        scene = MockGameScene(size: UIScreen.main.bounds.size)
     }
     
     override func tearDown() {
@@ -20,10 +24,15 @@ class CollectionNodeUnitTests: XCTestCase {
         super.tearDown()
     }
     
-    func testExample() {
+    func testIndex() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
+        
+        let gameVC = GameViewController()
+        
+        
     }
+    
     
     func testPerformanceExample() {
         // This is an example of a performance test case.

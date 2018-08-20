@@ -11,12 +11,16 @@ public typealias Index = Int
 
 public class CollectionNode: SKNode {
     
-    //MARK: - public
+    // MARK: - public
     /** the current index of the CollectionNode */
-    private(set) public var index: Int = 0 { didSet{ delegate?.collectionNode(self, didShowItemAt: index) } }
+    private(set) public var index: Int = 0 {
+        didSet { delegate?.collectionNode(self, didShowItemAt: index) }
+    }
     
     /** the object that acts as data source for the collection view */
-    public weak var dataSource: CollectionNodeDataSource? { didSet{ reloadData() } }
+    public weak var dataSource: CollectionNodeDataSource? {
+        didSet { reloadData() }
+    }
     
     /** the object that acts as delegate for the collection view */
     public weak var delegate: CollectionNodeDelegate?
@@ -24,7 +28,7 @@ public class CollectionNode: SKNode {
     /** returns all the children of this node that are CollectionNodeItems  */
     public var items: [CollectionNodeItem] {
         var nodes: [CollectionNodeItem] = []
-        children.forEach{
+        children.forEach {
             if let item = $0 as? CollectionNodeItem {
                 nodes.append(item)
             }
@@ -32,12 +36,13 @@ public class CollectionNode: SKNode {
         return nodes
     }
     
-    //MARK: - Default values
+    // MARK: - Default values
     /** the spacing between elements of the CollectionNode */
-    public var spaceBetweenItems: CGFloat = 5 { didSet{ setSpacing() } }
+    public var spaceBetweenItems: CGFloat = 5 {
+        didSet { setSpacing() }
+    }
     
-    
-    //MARK: - initializers
+    // MARK: - initializers
     public init(at view: SKView) {
         skview = view
         super.init()
@@ -68,13 +73,13 @@ public class CollectionNode: SKNode {
         #endif
     }
     
-    //MARK: - Public methods
+    // MARK: - Public methods
     /**
      To be called on the scene's update. Allows this node to animate when touch is released
      
      - parameter dampingRatio: the ratio for the collectionNode deacceleration (0 to 1 meaning the percentage of speed to deaccelerate when touch is released, default is 1%)
      */
-    public func update(_ currentTime: TimeInterval, dampingRatio: Double = 0.01){
+    public func update(_ currentTime: TimeInterval, dampingRatio: Double = 0.01) {
         if shouldBeginUpdating {
             updateIndex()
             
@@ -84,11 +89,11 @@ public class CollectionNode: SKNode {
             let action = SKAction.move(by: CGVector(dx: distance, dy: 0),
                                        duration: 0.0)
             //run actions
-            children.forEach{ $0.run(action, withKey: "move") }
+            children.forEach { $0.run(action, withKey: "move") }
             
             //update context
-            damping = damping + trueVelocity * dampingRatio
-            trueVelocity = trueVelocity - damping
+            damping += trueVelocity * dampingRatio
+            trueVelocity -= damping
             date = Date()
             totalDistance += distance
             
@@ -96,8 +101,7 @@ public class CollectionNode: SKNode {
                 shouldBeginUpdating = false
                 updateIndex()
                 snap(to: index)
-            }
-            else { previousVelocity = trueVelocity }
+            } else { previousVelocity = trueVelocity }
         }
     }
     
@@ -117,8 +121,7 @@ public class CollectionNode: SKNode {
                                      y: 0,
                                      duration: duration)
         
-        
-        children.forEach{ $0.run(action) }
+        children.forEach { $0.run(action) }
         totalDistance = 0
     }
     
@@ -132,26 +135,28 @@ public class CollectionNode: SKNode {
             addChild(item)
         }
         
-        biggestItem = children.sorted{ $0.calculateAccumulatedFrame().size.width > $1.calculateAccumulatedFrame().size.width }.first!
+        biggestItem = children
+            .sorted { $0.calculateAccumulatedFrame().size.width > $1.calculateAccumulatedFrame().size.width }.first!
         origin = children[0].position
         index = 0
         
         setSpacing()
     }
     
-    //MARK: - private
+    // MARK: - private
     private weak var skview: SKView?
-    private var touchDistance : Double!
-    private var biggestItem : SKNode!
-    private var shouldBeginUpdating : Bool = false
-    private var date : Date!
-    private var pureVelocity : Double!
-    private var trueVelocity : Double = 0
-    private var previousVelocity : Double!
-    private var damping : Double!
-    fileprivate var totalDistance : Double = 0
-    private var origin : CGPoint!
-    private lazy var panGestureRecognizer : UIPanGestureRecognizer! = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
+    private var touchDistance: Double!
+    private var biggestItem: SKNode!
+    private var shouldBeginUpdating: Bool = false
+    private var date: Date!
+    private var pureVelocity: Double!
+    private var trueVelocity: Double = 0
+    private var previousVelocity: Double!
+    private var damping: Double!
+    fileprivate var totalDistance: Double = 0
+    private var origin: CGPoint!
+    private lazy var panGestureRecognizer: UIPanGestureRecognizer! =
+        UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     
     #if os(tvOS)
     private lazy var tapGestureRecognizer: UIGestureRecognizer! = UITapGestureRecognizer(target: self, action: #selector(handleTap))
@@ -171,7 +176,7 @@ public class CollectionNode: SKNode {
     #endif
     
     fileprivate func setSpacing(){
-        for index in 0..<children.count{
+        for index in 0..<children.count {
             children[index].position.x =
                 (biggestItem.calculateAccumulatedFrame().size.width + spaceBetweenItems) * CGFloat(index)
         }
@@ -187,14 +192,18 @@ public class CollectionNode: SKNode {
             updateIndex()
             
             pureVelocity = Double(panGestureRecognizer.velocity(in: self.skview).x)
-            damping = index == 0 && pureVelocity > 0 || index == dataSource!.numberOfItems()-1 && pureVelocity < 0 ? pureVelocity*0.5 : 0
+            damping =
+                index == 0 && pureVelocity > 0 || index == dataSource!.numberOfItems()-1 && pureVelocity < 0
+                ? pureVelocity*0.5
+                : 0
+            
             trueVelocity = pureVelocity - damping
             
             let time = date.timeIntervalSinceNow
             let distance = -(trueVelocity * time)
             let action = SKAction.move(by: CGVector(dx: distance , dy: 0) , duration: 0)
             
-            children.forEach{ $0.run(action, withKey: "move") }
+            children.forEach { $0.run(action, withKey: "move") }
             
             totalDistance += distance
             date = Date()
@@ -210,25 +219,24 @@ public class CollectionNode: SKNode {
         }
     }
     
-    //MARK: - Support methods
+    // MARK: - Support methods
     private func updateIndex() {
         let currentNode =
-            children.filter{ $0.isKind(of: CollectionNodeItem.self) }.sorted{
+            children.filter { $0.isKind(of: CollectionNodeItem.self) }.sorted {
                 return $0.position.distance(to: origin) < $1.position.distance(to: origin)
                 }.first!
-        
-        index = (currentNode as! CollectionNodeItem).index
+        if let node = currentNode as? CollectionNodeItem {
+            index = node.index
+        }
     }
 }
 
-
-//MARK: - collection node item
+// MARK: - collection node item
 open class CollectionNodeItem: SKNode {
     
-    fileprivate var index : Index!
+    fileprivate var index: Index!
     
-    fileprivate var collection: CollectionNode { return self.parent as! CollectionNode }
-    
+    fileprivate var collection: CollectionNode? { return self.parent as? CollectionNode }
     
     public override init() {
         super.init()
@@ -243,7 +251,9 @@ open class CollectionNodeItem: SKNode {
     // if on tvOS, didSelectItem is called on tapGesture instead
     
     open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if collection.totalDistance <= 5 { collection.delegate?.collectionNode(collection, didSelectItem: self, at: self.index) }
+        if collection!.totalDistance <= 5 {
+            collection!.delegate?.collectionNode(collection!, didSelectItem: self, at: self.index)
+        }
     }
     #endif
 }
@@ -268,16 +278,16 @@ public protocol CollectionNodeDelegate: class {
      
      - parameter index: current index of the collectionNode
      */
-    func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) -> Void
+    func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index)
     /**
      called each time an item is selected
      */
-    func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index ) -> Void
+    func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index )
 }
 
 public extension CollectionNodeDelegate {
-    func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) -> Void {  }
-    func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index ) -> Void {  }
+    func collectionNode(_ collectionNode: CollectionNode, didShowItemAt index: Index) {  }
+    func collectionNode(_ collectionNode: CollectionNode, didSelectItem item: CollectionNodeItem, at index: Index ) {  }
 }
 
 private extension CGPoint {
@@ -287,6 +297,3 @@ private extension CGPoint {
         return hypot(deltaX, deltaY)
     }
 }
-
-
-
